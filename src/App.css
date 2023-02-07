@@ -1,0 +1,41 @@
+* {
+    background-color:#5c5470
+}
+
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.square {
+    border: none;
+    float: left;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 75px;
+    
+    padding: 0;
+    text-align: center;
+    width: 75px;
+  }
+
+  .game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.square img {
+  background: transparent;  
+}
+
+.square img:not([src]) {
+  visibility: hidden;
+}
