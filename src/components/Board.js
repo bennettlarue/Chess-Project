@@ -8,6 +8,7 @@ const Board = () => {
   const [pieceToMove, setPieceToMove] = useState(null); // Piece selected by the user.
   const [animating, setAnimating] = useState(false); // True while a piece is playing a movement animation.
   const [colorToMove, setColorToMove] = useState("B"); // "W" when it's white's turn, "B" when it's black's turn.
+  const [availableSpaces, setAvailableSpaces] = useState([]);
 
   const [board, setBoard] = useState([
     "WR", "WN", "WB", "WK", "WQ", "WB", "WN", "WR",
@@ -29,13 +30,14 @@ const Board = () => {
     // Check if the space contains a piece and if the piece belongs to current color. 
     if (board[space] != null && board[space][0] == colorToMove) {
       setPieceToMove([space]); // Select piece on this space.
+      setAvailableSpaces(movement.getCardinalSlidingMoves(space, board))
+      //console.log(availableSpaces)
       return true;
     }
 
     else if (pieceToMove != null) {
       movePiece(space);
-      //if (colorToMove === 'B') setColorToMove('W')
-      //else setColorToMove('B')
+      switchColorToMove();
     }
   }
 
@@ -53,6 +55,13 @@ const Board = () => {
         setBoard(newBoard);
       }, 200);
   }
+
+  function switchColorToMove() {
+    if (colorToMove === "B") setColorToMove("W");
+    else setColorToMove("B"); 
+  }
+
+
 
   function makeSquare(space, color, image, animatePiece) {
     let animation = "";
@@ -92,6 +101,7 @@ const Board = () => {
     //space colors
     let white = "#dbd8e3";
     let black = "#352f44";
+    let red =   "#FF0000";
 
     //Create array to store board elements.
     let squares = [];
@@ -105,7 +115,9 @@ const Board = () => {
         let animate = false;
         if (animating) animate = true;
 
-        if (isWhite)
+        if (availableSpaces.includes(col + (row * 8)))
+          squareRow.push(makeSquare(col + (row * 8), red, board[col + (row * 8)], animate));
+        else if (isWhite)
           squareRow.push(makeSquare(col + (row * 8), white, board[col + (row * 8)], animate));
         else
           squareRow.push(makeSquare(col + (row * 8), black, board[col + (row * 8)], animate));
