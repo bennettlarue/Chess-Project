@@ -30,7 +30,7 @@ const Board = () => {
     // Check if the space contains a piece and if the piece belongs to current color. 
     if (board[space] != null && board[space][0] == colorToMove) {
       setPieceToMove([space]); // Select piece on this space.
-      setAvailableSpaces(movement.getCardinalSlidingMoves(space, board))
+      setAvailableSpaces(movement.getKnightMoves(space, board))
       //console.log(availableSpaces)
       return true;
     }
