@@ -1,5 +1,9 @@
 const movement = {
 
+    containsPiece(spaceIndex, board) {
+        return !(board[spaceIndex] == null)
+    },
+
     containsFriendlyPiece(pieceIndex, spaceIndex, board) {
         let pieceValue = board[pieceIndex]
         let spaceValue = board[spaceIndex]
@@ -20,6 +24,20 @@ const movement = {
         }
 
         return false;
+    },
+
+    pieceIsWhite(pieceIndex, board) {
+        if (board[pieceIndex][0] == 'W') return true;
+        return false;
+    },
+
+    pawnHasMoved(pieceIndex, board) {
+        if ((this.pieceIsWhite(pieceIndex, board) && Math.floor(pieceIndex/8) == 1) ||
+          (! this.pieceIsWhite(pieceIndex, board) && Math.floor(pieceIndex/8) == 6)) 
+           return false;
+        
+        return true; 
+
     },
 
     calculatePositionData() {
@@ -124,27 +142,51 @@ const movement = {
         let slidingMoves = this.getSlidingMoves(pieceIndex);
         
         let ordinalAdjacentSpaces = [slidingMoves.northWest[0], slidingMoves.southWest[0], slidingMoves.northEast[0], slidingMoves.southEast[0]]
-    
         let directionsX = [+1, +1, -1, -1]
         let directionsY = [-1, +1, -1, +1]
         
         let availableMoves = []
 
         for (let directionIndex = 0; directionIndex < 4; directionIndex++) {
-            //let xSpaceIndex = ordinalAdjacentSpaces[directionIndex] + directionsX[directionIndex];
-            //if ((slidingMoves.west.length > 2 && slidingMoves.east.length > 2))
-            if ((directionsX[directionIndex] < 0 && slidingMoves.east.length >= 2) ||
-                (directionsX[directionIndex] > 0 && slidingMoves.west.length >= 2))
-            availableMoves.push(ordinalAdjacentSpaces[directionIndex] + directionsX[directionIndex])
+            let xSpaceIndex = ordinalAdjacentSpaces[directionIndex] + directionsX[directionIndex]
+            if (((directionsX[directionIndex] < 0 && slidingMoves.east.length >= 2) ||
+                (directionsX[directionIndex] > 0 && slidingMoves.west.length >= 2)) &&
+                !this.containsFriendlyPiece(pieceIndex, xSpaceIndex, board))
+            availableMoves.push(xSpaceIndex)
             
-            if ((directionsX[directionIndex] < 0 && slidingMoves.east.length >= 1) ||
-                (directionsX[directionIndex] > 0 && slidingMoves.west.length >= 1))
-            availableMoves.push(ordinalAdjacentSpaces[directionIndex] + (directionsY[directionIndex] * 8))
+            let ySpaceIndex = ordinalAdjacentSpaces[directionIndex] + (directionsY[directionIndex] * 8)
+            if (((directionsX[directionIndex] < 0 && slidingMoves.east.length >= 1) ||
+                (directionsX[directionIndex] > 0 && slidingMoves.west.length >= 1)) &&
+                !this.containsFriendlyPiece(pieceIndex, ySpaceIndex, board))
+            availableMoves.push(ySpaceIndex)
         }
-        let data = this.calculatePositionData();
-        console.log(data[pieceIndex])
         
         return availableMoves;
+    },
+
+    getPawnMoves(pieceIndex, board) {
+        let slidingMoves = this.getSlidingMoves(pieceIndex);
+        let availableMoves = []
+
+        let yDirection;
+        if (this.pieceIsWhite(pieceIndex, board)) yDirection = "south";
+        else yDirection = "north";
+
+        let spaceIndex = slidingMoves[yDirection][0]
+        if (!this.containsPiece(spaceIndex, board)) {
+            availableMoves.push(spaceIndex)
+            spaceIndex = slidingMoves[yDirection][1]
+            if (!this.containsPiece(spaceIndex, board) && !this.pawnHasMoved(pieceIndex, board))
+            availableMoves.push(spaceIndex)
+        }
+
+        spaceIndex = slidingMoves[yDirection + "East"][0]
+        if (this.containsEnemyPiece(pieceIndex, spaceIndex, board)) availableMoves.push(spaceIndex)
+        spaceIndex = slidingMoves[yDirection + "West"][0 ]
+        if (this.containsEnemyPiece(pieceIndex, spaceIndex, board)) availableMoves.push(spaceIndex)
+
+        
+        return availableMoves;   
     }
 
 }
