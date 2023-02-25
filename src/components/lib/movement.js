@@ -109,7 +109,7 @@ const movement = {
 
     checkDirectionsForValidMoves(pieceIndex, directionsArray, board) {
         let availableMoves = []
-        for (let directionIndex = 0; directionIndex < 4; directionIndex++) {
+        for (let directionIndex = 0; directionIndex < directionsArray.length; directionIndex++) {
             for (let i = 0; i < directionsArray[directionIndex].length; i ++) {
                 
                 let spaceIndex = directionsArray[directionIndex][i]
@@ -124,6 +124,14 @@ const movement = {
         return availableMoves;
     },
 
+    getQueenMoves(pieceIndex, board) {
+        let slidingMoves = this.getSlidingMoves(pieceIndex);
+        let possibleMoves = [slidingMoves.north, slidingMoves.south, slidingMoves.west, slidingMoves.east,
+                            slidingMoves.northWest, slidingMoves.southWest, slidingMoves.northEast, slidingMoves.southEast]
+
+        return this.checkDirectionsForValidMoves(pieceIndex, possibleMoves, board);  
+    },
+
     getRookMoves(pieceIndex, board) {
         let slidingMoves = this.getSlidingMoves(pieceIndex);
         let possibleMoves = [slidingMoves.north, slidingMoves.south, slidingMoves.west, slidingMoves.east]
@@ -136,6 +144,17 @@ const movement = {
         let possibleMoves = [slidingMoves.northWest, slidingMoves.southWest, slidingMoves.northEast, slidingMoves.southEast]
 
         return this.checkDirectionsForValidMoves(pieceIndex, possibleMoves, board);
+    },
+
+    getKingMoves(pieceIndex, board) {
+        let slidingMoves = this.getSlidingMoves(pieceIndex)
+        let directions = Object.keys(slidingMoves)
+        let availableMoves = [];
+        for (let i = 0; i < directions.length; i++) {
+            let spaceIndex = slidingMoves[directions[i]][0]
+            if (!this.containsFriendlyPiece(pieceIndex, spaceIndex, board)) availableMoves.push(spaceIndex) 
+        }
+        return availableMoves;
     },
 
     getKnightMoves(pieceIndex, board) {
