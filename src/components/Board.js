@@ -25,25 +25,30 @@ const Board = () => {
   
   */
   function handleClick(space) {
-
-    //console.log(board[space]);
     // Check if the space contains a piece and if the piece belongs to current color. 
     if (board[space] != null && board[space][0] == colorToMove) {
       setPieceToMove([space]); // Select piece on this space.
-      setAvailableSpaces(movement.getQueenMoves(space, board))
-      //console.log(availableSpaces)
+      setAvailableSpaces(movement.getAvailableMoves(space, board))
       return true;
     }
 
-    else if (pieceToMove != null) {
+    else if (pieceToMove != null && availableSpaces.includes(space)) {
+      console.log(board[pieceToMove] + " to " + space)
+      setAvailableSpaces([]);
       movePiece(space);
       switchColorToMove();
     }
   }
 
   function movePiece(space) {
+    let info = document.getElementById("game-info");
+    let text = document.createTextNode("This just got added");
+    let lineBreak = document.createElement("br");
+    info.appendChild(text);
+    info.appendChild(lineBreak);
+
     setSelectedSpace([space]);
-      setAnimating(true);
+    setAnimating(true);
 
       setTimeout(() => {
         setAnimating(false);
@@ -61,7 +66,7 @@ const Board = () => {
     else setColorToMove("B"); 
   }
 
-
+  
 
   function makeSquare(space, color, image, animatePiece) {
     let animation = "";
@@ -82,6 +87,7 @@ const Board = () => {
         img={pieces.get(image)}
         style={{
           background: color,
+          boarder: '1px solid black',
         }}
         imageStyle={{
           transform: animation,
@@ -101,7 +107,7 @@ const Board = () => {
     //space colors
     let white = "#dbd8e3";
     let black = "#352f44";
-    let red =   "#FF0000";
+    let red =   "#f95959";
 
     //Create array to store board elements.
     let squares = [];
@@ -125,7 +131,7 @@ const Board = () => {
       squares.push(squareRow);
     }
     return (
-      <div className="board">
+      <div className="board" >
         <div>{squares[0]}</div>
         <div>{squares[1]}</div>
         <div>{squares[2]}</div>

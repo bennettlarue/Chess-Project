@@ -1,5 +1,5 @@
 * {
-    background-color:#5c5470
+  background-color: #5c5470
 }
 
 body {
@@ -7,33 +7,45 @@ body {
   margin: 20px;
 }
 
-ol, ul {
+ol,
+ul {
   padding-left: 30px;
 }
 
 .square {
-    border: none;
-    float: left;
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 75px;
-    
-    padding: 0;
-    text-align: center;
-    width: 75px;
-  }
 
-  .game {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
+  border: 1px solid black;
+  float: left;
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 75px;
+
+  padding: 0;
+  text-align: center;
+  width: 75px;
+}
+
+.game {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-width: 1200px;
+
+}
+
+#game-info {
+  display: inline-block;
+  margin: 40px;
+  width: 300px;
+  border: 3px solid black;
+  background-color: grey;
 }
 
 .square img {
-  background: transparent;  
+  background: transparent;
 }
 
 .square img:not([src]) {

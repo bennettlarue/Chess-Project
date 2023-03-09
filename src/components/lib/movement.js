@@ -206,8 +206,27 @@ const movement = {
 
         
         return availableMoves;   
-    }
+    },
 
+    getAvailableMoves(pieceIndex, board) {
+        let pieceType = board[pieceIndex][1]
+        
+        switch(pieceType) {
+            case "P":
+                return this.getPawnMoves(pieceIndex, board)
+            case "N":
+                return this.getKnightMoves(pieceIndex, board)
+            case "B":
+                return this.getBishopMoves(pieceIndex, board)
+            case "R":
+                return this.getRookMoves(pieceIndex, board)
+            case "Q":
+                return this.getQueenMoves(pieceIndex, board)
+            case "K":
+                return this.getKingMoves(pieceIndex, board)
+
+        }
+    }
 }
 
 module.exports = movement;
