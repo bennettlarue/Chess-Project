@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import pieces from "./images/index";
 import movement from "./lib/movement";
 
+//space colors
+const white = "#dbd8e3";
+const black = "#5c5470";
+const red =   "#f95959";
+
 const Board = () => {
   const [selectedSpace, setSelectedSpace] = useState(null); // Space selected by the user for the selected piece to move to.
   const [pieceToMove, setPieceToMove] = useState(null); // Piece selected by the user.
@@ -33,7 +38,7 @@ const Board = () => {
     }
 
     else if (pieceToMove != null && availableSpaces.includes(space)) {
-      console.log(board[pieceToMove] + " to " + space)
+      let letters = 'abcdefgh';
       setAvailableSpaces([]);
       movePiece(space);
       switchColorToMove();
@@ -41,11 +46,11 @@ const Board = () => {
   }
 
   function movePiece(space) {
-    let info = document.getElementById("game-info");
-    let text = document.createTextNode("This just got added");
-    let lineBreak = document.createElement("br");
-    info.appendChild(text);
-    info.appendChild(lineBreak);
+    let info = document.getElementById("game-info-text");
+    let moveDiv = document.createElement("div");
+    let text = document.createTextNode(moveToString(space));
+    moveDiv.appendChild(text);
+    info.appendChild(moveDiv);
 
     setSelectedSpace([space]);
     setAnimating(true);
@@ -61,12 +66,15 @@ const Board = () => {
       }, 200);
   }
 
+  function moveToString(space) {
+    let letters = 'abcdefgh';
+    return(board[pieceToMove] + " to " + letters[space%8] + (Math.floor(space/8) + 1));
+  }
+
   function switchColorToMove() {
     if (colorToMove === "B") setColorToMove("W");
     else setColorToMove("B"); 
   }
-
-  
 
   function makeSquare(space, color, image, animatePiece) {
     let animation = "";
@@ -104,10 +112,7 @@ const Board = () => {
   squares contain is determined by the "board" useState.
   */
   function drawBoard() {
-    //space colors
-    let white = "#dbd8e3";
-    let black = "#352f44";
-    let red =   "#f95959";
+    
 
     //Create array to store board elements.
     let squares = [];
