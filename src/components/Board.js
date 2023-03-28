@@ -13,7 +13,7 @@ const Board = () => {
   const [pieceToMove, setPieceToMove] = useState(null); // Piece selected by the user.
   const [animating, setAnimating] = useState(false); // True while a piece is playing a movement animation.
   const [colorToMove, setColorToMove] = useState("W"); // "W" when it's white's turn, "B" when it's black's turn.
-  const [availableSpaces, setAvailableSpaces] = useState([]);
+  const [availableSpaces, setAvailableSpaces] = useState([]); // If a piece is selected, its available moves are stored here. 
 
   const [board, setBoard] = useState([
     "WR", "WN", "WB", "WK", "WQ", "WB", "WN", "WR",
