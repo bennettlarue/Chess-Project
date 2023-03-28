@@ -1,5 +1,7 @@
 # Chess in React
 
+## Play it here! : https://bennettlarue.github.io/Chess-Project/
+
 ## Description
 This project is a simple implementation of chess using react. I it wrote in my free time as a way to strength my skills in ths library and in Javascript in general, as well as a way to gain experience in completing and deploying web projects. I had a lot of fun making it and in the process I gained some valuable experience in publishing my work to github and managing larger scale project consisting of several Javascript, CSS, HTML files and various assets.
 
